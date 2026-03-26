@@ -34,51 +34,7 @@ import { ShopifyService, Order } from '../../core/services/shopify.service';
     IonSpinner,
     IonBadge,
   ],
-  template: `
-    <ion-header>
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-back-button defaultHref="/tabs/profile"></ion-back-button>
-        </ion-buttons>
-        <ion-title>My Orders</ion-title>
-      </ion-toolbar>
-    </ion-header>
-
-    <ion-content>
-      @if (loading()) {
-        <div style="display:flex;justify-content:center;padding:2rem">
-          <ion-spinner name="crescent"></ion-spinner>
-        </div>
-      } @else if (orders().length === 0) {
-        <div style="display:flex;flex-direction:column;align-items:center;padding:3rem 1rem;text-align:center">
-          <p style="font-size:16px">No orders yet.</p>
-          <a routerLink="/tabs/collections" style="color:var(--ion-color-primary);font-weight:600">Start Shopping</a>
-        </div>
-      } @else {
-        <ion-list>
-          @for (order of orders(); track order.id) {
-            <ion-item [routerLink]="['/orders', order.id]" detail button>
-              <ion-label>
-                <h3>Order #{{ order.orderNumber }}</h3>
-                <p>{{ order.processedAt | date:'mediumDate' }}</p>
-                <p>
-                  {{ order.currentTotalPrice.currencyCode }}
-                  {{ +order.currentTotalPrice.amount | number:'1.2-2' }}
-                </p>
-              </ion-label>
-              <div slot="end">
-                @if (order.fulfillmentStatus) {
-                  <ion-badge [color]="fulfillmentColor(order.fulfillmentStatus)">
-                    {{ order.fulfillmentStatus | titlecase }}
-                  </ion-badge>
-                }
-              </div>
-            </ion-item>
-          }
-        </ion-list>
-      }
-    </ion-content>
-  `,
+  templateUrl: './orders.page.html',
 })
 export class OrdersPage implements OnInit {
   private readonly shopify = inject(ShopifyService);

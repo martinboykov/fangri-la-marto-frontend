@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/cart"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Checkout</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="p-4">
+    <h2 class="text-[18px] font-bold mb-4 mt-0">Shipping Address</h2>
+
+    <ion-item>
+      <ion-input label="First Name" [(ngModel)]="firstName" labelPlacement="floating"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input label="Last Name" [(ngModel)]="lastName" labelPlacement="floating"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input label="Address" [(ngModel)]="address1" labelPlacement="floating"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input label="City" [(ngModel)]="city" labelPlacement="floating"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input label="Province / State" [(ngModel)]="province" labelPlacement="floating"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input label="Country" [(ngModel)]="country" labelPlacement="floating"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input label="Postal Code" [(ngModel)]="zip" labelPlacement="floating"></ion-input>
+    </ion-item>
+
+    @if (error()) {
+      <p class="text-[color:var(--ion-color-danger)] text-[13px] my-2">{{ error() }}</p>
+    }
+
+    <ion-button
+      expand="block"
+      class="mt-4"
+      [disabled]="loading()"
+      (click)="proceedToPayment()"
+    >
+      @if (loading()) {
+        <ion-spinner name="crescent" slot="start"></ion-spinner>
+      }
+      Proceed to Payment
+    </ion-button>
+
+    <div class="mt-6 border-t border-[color:var(--ion-color-light)] pt-4">
+      <p class="text-[12px] text-[color:var(--ion-color-medium)] text-center">
+        You will be redirected to Shopify's secure checkout to complete payment.
+      </p>
+    </div>
+  </div>
+</ion-content>

@@ -11,7 +11,6 @@ import {
   IonButtons,
   IonButton,
   IonItem,
-  IonLabel,
   IonInput,
   IonSpinner,
 } from '@ionic/angular/standalone';
@@ -34,70 +33,10 @@ import { AuthService } from '../../core/services/auth.service';
     IonButtons,
     IonButton,
     IonItem,
-    IonLabel,
     IonInput,
     IonSpinner,
   ],
-  template: `
-    <ion-header>
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-back-button defaultHref="/tabs/cart"></ion-back-button>
-        </ion-buttons>
-        <ion-title>Checkout</ion-title>
-      </ion-toolbar>
-    </ion-header>
-
-    <ion-content>
-      <div style="padding:16px">
-        <h2 style="font-size:18px;font-weight:700;margin-bottom:16px">Shipping Address</h2>
-
-        <ion-item>
-          <ion-input label="First Name" [(ngModel)]="firstName" labelPlacement="floating"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-input label="Last Name" [(ngModel)]="lastName" labelPlacement="floating"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-input label="Address" [(ngModel)]="address1" labelPlacement="floating"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-input label="City" [(ngModel)]="city" labelPlacement="floating"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-input label="Province / State" [(ngModel)]="province" labelPlacement="floating"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-input label="Country" [(ngModel)]="country" labelPlacement="floating"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-input label="Postal Code" [(ngModel)]="zip" labelPlacement="floating"></ion-input>
-        </ion-item>
-
-        @if (error()) {
-          <p style="color:var(--ion-color-danger);font-size:13px;margin:8px 0">{{ error() }}</p>
-        }
-
-        <ion-button
-          expand="block"
-          style="margin-top:16px"
-          [disabled]="loading()"
-          (click)="proceedToPayment()"
-        >
-          @if (loading()) {
-            <ion-spinner name="crescent" slot="start"></ion-spinner>
-          }
-          Proceed to Payment
-        </ion-button>
-
-        <div style="margin-top:24px;border-top:1px solid var(--ion-color-light);padding-top:16px">
-          <p style="font-size:12px;color:var(--ion-color-medium);text-align:center">
-            You will be redirected to Shopify's secure checkout to complete payment.
-          </p>
-        </div>
-      </div>
-    </ion-content>
-  `,
+  templateUrl: './checkout.page.html',
 })
 export class CheckoutPage implements OnInit {
   private readonly cartService = inject(CartService);

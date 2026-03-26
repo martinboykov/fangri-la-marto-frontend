@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Account</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  @if (!authService.isLoggedIn()) {
+    <div class="flex flex-col items-center px-4 py-12 text-center">
+      <ion-icon name="person-outline" class="text-[64px] text-[color:var(--ion-color-medium)] mb-4"></ion-icon>
+      <p class="text-[16px] mb-4">Sign in to view your orders and manage your account.</p>
+      <ion-button routerLink="/auth">Sign In / Register</ion-button>
+    </div>
+  } @else {
+    @if (authService.customer(); as customer) {
+      <div class="p-4">
+        <h2 class="text-[20px] font-bold mb-1 mt-0">
+          {{ customer.firstName }} {{ customer.lastName }}
+        </h2>
+        <p class="text-[color:var(--ion-color-medium)] text-[14px] mb-6 mt-0">{{ customer.email }}</p>
+      </div>
+    }
+
+    <ion-list>
+      <ion-item [routerLink]="['/orders']" detail button>
+        <ion-icon name="receipt-outline" slot="start" color="primary"></ion-icon>
+        <ion-label>My Orders</ion-label>
+      </ion-item>
+    </ion-list>
+
+    <div class="p-4 mt-auto">
+      <ion-button expand="block" fill="outline" color="danger" (click)="logout()">
+        Sign Out
+      </ion-button>
+    </div>
+  }
+</ion-content>

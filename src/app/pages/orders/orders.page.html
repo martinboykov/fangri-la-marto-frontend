@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/profile"></ion-back-button>
+    </ion-buttons>
+    <ion-title>My Orders</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  @if (loading()) {
+    <div class="flex justify-center p-8">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  } @else if (orders().length === 0) {
+    <div class="flex flex-col items-center px-4 py-12 text-center">
+      <p class="text-[16px]">No orders yet.</p>
+      <a routerLink="/tabs/collections" class="text-[color:var(--ion-color-primary)] font-semibold">Start Shopping</a>
+    </div>
+  } @else {
+    <ion-list>
+      @for (order of orders(); track order.id) {
+        <ion-item [routerLink]="['/orders', order.id]" detail button>
+          <ion-label>
+            <h3>Order #{{ order.orderNumber }}</h3>
+            <p>{{ order.processedAt | date:'mediumDate' }}</p>
+            <p>
+              {{ order.currentTotalPrice.currencyCode }}
+              {{ +order.currentTotalPrice.amount | number:'1.2-2' }}
+            </p>
+          </ion-label>
+          <div slot="end">
+            @if (order.fulfillmentStatus) {
+              <ion-badge [color]="fulfillmentColor(order.fulfillmentStatus)">
+                {{ order.fulfillmentStatus | titlecase }}
+              </ion-badge>
+            }
+          </div>
+        </ion-item>
+      }
+    </ion-list>
+  }
+</ion-content>

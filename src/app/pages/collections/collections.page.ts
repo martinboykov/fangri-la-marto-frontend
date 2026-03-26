@@ -41,60 +41,7 @@ const COLLECTION_HANDLE = 'all';
     IonInfiniteScroll,
     IonInfiniteScrollContent,
   ],
-  template: `
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Shop</ion-title>
-      </ion-toolbar>
-    </ion-header>
-
-    <ion-content>
-      @if (loading()) {
-        <div style="display:flex;justify-content:center;padding:2rem">
-          <ion-spinner name="crescent"></ion-spinner>
-        </div>
-      } @else {
-        <ion-grid>
-          <ion-row>
-            @for (product of products(); track product.id) {
-              <ion-col size="6" size-md="4" size-lg="3">
-                <ion-card
-                  [routerLink]="['/product', product.handle]"
-                  style="cursor:pointer;margin:4px"
-                >
-                  @if (product.featuredImage) {
-                    <ion-img
-                      [src]="product.featuredImage.url"
-                      [alt]="product.featuredImage.altText || product.title"
-                      style="aspect-ratio:1;object-fit:cover"
-                    ></ion-img>
-                  }
-                  <ion-card-content style="padding:8px">
-                    <p style="font-size:13px;font-weight:600;margin:0 0 4px">{{ product.title }}</p>
-                    <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px">
-                      @for (badge of shopify.getBadges(product); track badge.label) {
-                        <span [class]="'badge badge--' + badge.type">{{ badge.label }}</span>
-                      }
-                    </div>
-                    <p style="font-size:12px;color:var(--ion-color-medium);margin:0">
-                      {{ product.priceRange.minVariantPrice.currencyCode }}
-                      {{ product.priceRange.minVariantPrice.amount | number:'1.2-2' }}
-                    </p>
-                  </ion-card-content>
-                </ion-card>
-              </ion-col>
-            }
-          </ion-row>
-        </ion-grid>
-
-        @if (hasNextPage()) {
-          <ion-infinite-scroll (ionInfinite)="loadMore($event)">
-            <ion-infinite-scroll-content loadingSpinner="crescent"></ion-infinite-scroll-content>
-          </ion-infinite-scroll>
-        }
-      }
-    </ion-content>
-  `,
+  templateUrl: './collections.page.html',
 })
 export class CollectionsPage implements OnInit {
   readonly shopify = inject(ShopifyService);

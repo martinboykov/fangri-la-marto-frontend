@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ mode() === 'login' ? 'Sign In' : 'Create Account' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="px-6 py-6 max-w-[400px] mx-auto">
+    <ion-segment [(ngModel)]="activeMode" (ngModelChange)="mode.set($event)" class="mb-6">
+      <ion-segment-button value="login">
+        <ion-label>Sign In</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="register">
+        <ion-label>Register</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    @if (mode() === 'register') {
+      <ion-item>
+        <ion-input label="First Name" [(ngModel)]="firstName" labelPlacement="floating" autocomplete="given-name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input label="Last Name" [(ngModel)]="lastName" labelPlacement="floating" autocomplete="family-name"></ion-input>
+      </ion-item>
+    }
+
+    <ion-item>
+      <ion-input
+        label="Email"
+        type="email"
+        [(ngModel)]="email"
+        labelPlacement="floating"
+        autocomplete="email"
+      ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input
+        label="Password"
+        type="password"
+        [(ngModel)]="password"
+        labelPlacement="floating"
+        autocomplete="current-password"
+      ></ion-input>
+    </ion-item>
+
+    @if (error()) {
+      <p class="text-[color:var(--ion-color-danger)] text-[13px] my-2 mx-1">{{ error() }}</p>
+    }
+
+    <ion-button
+      expand="block"
+      class="mt-4"
+      [disabled]="loading()"
+      (click)="submit()"
+    >
+      @if (loading()) {
+        <ion-spinner name="crescent" slot="start"></ion-spinner>
+      }
+      {{ mode() === 'login' ? 'Sign In' : 'Create Account' }}
+    </ion-button>
+  </div>
+</ion-content>

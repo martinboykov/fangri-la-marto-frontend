@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Shop</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  @if (loading()) {
+    <div class="flex justify-center p-8">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  } @else {
+    <ion-grid>
+      <ion-row>
+        @for (product of products(); track product.id) {
+          <ion-col size="6" size-md="4" size-lg="3">
+            <ion-card
+              [routerLink]="['/product', product.handle]"
+              class="cursor-pointer m-1"
+            >
+              @if (product.featuredImage) {
+                <ion-img
+                  [src]="product.featuredImage.url"
+                  [alt]="product.featuredImage.altText || product.title"
+                  class="aspect-square object-cover"
+                ></ion-img>
+              }
+              <ion-card-content class="p-2">
+                <p class="text-[13px] font-semibold mb-1 mt-0">{{ product.title }}</p>
+                <div class="flex flex-wrap gap-1 mb-1">
+                  @for (badge of shopify.getBadges(product); track badge.label) {
+                    <span [class]="'badge badge--' + badge.type">{{ badge.label }}</span>
+                  }
+                </div>
+                <p class="text-[12px] text-[color:var(--ion-color-medium)] m-0">
+                  {{ product.priceRange.minVariantPrice.currencyCode }}
+                  {{ product.priceRange.minVariantPrice.amount | number:'1.2-2' }}
+                </p>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        }
+      </ion-row>
+    </ion-grid>
+
+    @if (hasNextPage()) {
+      <ion-infinite-scroll (ionInfinite)="loadMore($event)">
+        <ion-infinite-scroll-content loadingSpinner="crescent"></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    }
+  }
+</ion-content>
