@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Build output
+www/
+dist/
+
+# Capacitor native platforms — generated, not source
+android/
+ios/
+
+# Environment — if you ever put secrets in environment files
+# (the current env files are safe to commit as they contain no secrets)
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Angular cache
+.angular/
