@@ -1,6 +1,6 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import {
   IonHeader,
@@ -41,7 +41,6 @@ import { AuthService } from '../../core/services/auth.service';
 export class CheckoutPage implements OnInit {
   private readonly cartService = inject(CartService);
   private readonly authService = inject(AuthService);
-  private readonly router = inject(Router);
 
   firstName = '';
   lastName = '';
@@ -86,13 +85,8 @@ export class CheckoutPage implements OnInit {
         },
       ],
     };
-
-    const token = this.authService.token();
-    if (token) {
-      // The backend extracts the Shopify customer token from the JWT;
-      // pass it here to link the order to the customer account.
-      buyerIdentity['customerAccessToken'] = token;
-    }
+    // customerAccessToken is injected server-side by the backend from the JWT,
+    // so we never send the Shopify token from the frontend.
 
     this.cartService.updateBuyer(buyerIdentity).subscribe({
       next: () => {

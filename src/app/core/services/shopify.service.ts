@@ -112,28 +112,28 @@ export class ShopifyService {
   }
 
   getCart(cartId: string) {
-    return this.http.get<Cart>(`${this.base}/api/cart/${cartId}`);
+    return this.http.get<Cart>(`${this.base}/api/cart/${encodeURIComponent(cartId)}`);
   }
 
   addCartLines(cartId: string, lines: { merchandiseId: string; quantity: number }[]) {
-    return this.http.post<Cart>(`${this.base}/api/cart/${cartId}/lines`, { lines });
+    return this.http.post<Cart>(`${this.base}/api/cart/${encodeURIComponent(cartId)}/lines`, { lines });
   }
 
   updateCartLines(cartId: string, lines: { id: string; quantity: number }[]) {
-    return this.http.put<Cart>(`${this.base}/api/cart/${cartId}/lines`, { lines });
+    return this.http.put<Cart>(`${this.base}/api/cart/${encodeURIComponent(cartId)}/lines`, { lines });
   }
 
   removeCartLine(cartId: string, lineId: string) {
-    return this.http.delete<Cart>(`${this.base}/api/cart/${cartId}/lines/${lineId}`);
+    return this.http.delete<Cart>(`${this.base}/api/cart/${encodeURIComponent(cartId)}/lines/${encodeURIComponent(lineId)}`);
   }
 
   updateCartBuyer(cartId: string, buyerIdentity: object) {
-    return this.http.put<Cart>(`${this.base}/api/cart/${cartId}/buyer`, { buyerIdentity });
+    return this.http.put<Cart>(`${this.base}/api/cart/${encodeURIComponent(cartId)}/buyer`, { buyerIdentity });
   }
 
   getCheckoutUrl(cartId: string) {
     return this.http.get<{ checkoutUrl: string }>(
-      `${this.base}/api/cart/${cartId}/checkout-url`
+      `${this.base}/api/cart/${encodeURIComponent(cartId)}/checkout-url`
     );
   }
 

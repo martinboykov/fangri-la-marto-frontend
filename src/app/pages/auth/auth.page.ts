@@ -73,11 +73,9 @@ export class AuthPage {
       this.authService.register(this.email, this.password, this.firstName, this.lastName).subscribe({
         next: () => {
           this.loading.set(false);
-          // Auto-login after registration
-          this.authService.login(this.email, this.password).subscribe({
-            next: () => this.router.navigate(['/tabs/profile']),
-            error: () => this.router.navigate(['/auth']),
-          });
+          // Token stored in AuthService if email verification is disabled on the store.
+          // Navigate directly to profile — user is already logged in.
+          this.router.navigate(['/tabs/profile']);
         },
         error: (err) => {
           this.loading.set(false);

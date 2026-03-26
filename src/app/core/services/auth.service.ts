@@ -24,12 +24,19 @@ export class AuthService {
   readonly customer = this._customer.asReadonly();
 
   register(email: string, password: string, firstName?: string, lastName?: string) {
-    return this.http.post(`${environment.apiUrl}/api/auth/register`, {
-      email,
-      password,
-      firstName,
-      lastName,
-    });
+    return this.http
+      .post<{ customer: Customer; token?: string; expiresAt?: string }>(
+        `${environment.apiUrl}/api/auth/register`,
+        { email, password, firstName, lastName }
+      )
+      .pipe(
+        tap((res) => {
+          if (res.token) {
+            localStorage.setItem(TOKEN_KEY, res.token);
+            this._token.set(res.token);
+          }
+        })
+      );
   }
 
   login(email: string, password: string) {
