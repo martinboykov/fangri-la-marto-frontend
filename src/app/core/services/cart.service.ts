@@ -1,8 +1,8 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
 import { ShopifyService, Cart } from './shopify.service';
-import { tap } from 'rxjs/operators';
+import { tap, catchError, switchMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 
 const CART_ID_KEY = 'fangrila_cart_id';
 
@@ -20,7 +20,14 @@ export class CartService {
     if (!storedId) return of(null);
 
     return this.shopify.getCart(storedId).pipe(
-      tap((cart) => this._cart.set(cart))
+      tap((cart) => this._cart.set(cart)),
+      catchError((err: HttpErrorResponse) => {
+        if (err.status === 404) {
+          // Stale/expired cart — clear it silently
+          localStorage.removeItem(CART_ID_KEY);
+        }
+        return of(null);
+      })
     );
   }
 
@@ -31,7 +38,19 @@ export class CartService {
     const storedId = localStorage.getItem(CART_ID_KEY);
     if (storedId) {
       return this.shopify.getCart(storedId).pipe(
-        tap((cart) => this._cart.set(cart))
+        tap((cart) => this._cart.set(cart)),
+        catchError((err: HttpErrorResponse) => {
+          if (err.status === 404) {
+            // Cart has expired on Shopify — clear stale ID and create a fresh one
+            localStorage.removeItem(CART_ID_KEY);
+          }
+          return this.shopify.createCart().pipe(
+            tap((cart) => {
+              localStorage.setItem(CART_ID_KEY, cart.id);
+              this._cart.set(cart);
+            })
+          );
+        })
       );
     }
 
